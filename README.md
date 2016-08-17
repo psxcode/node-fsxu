@@ -16,13 +16,13 @@ var fsxu = require('fsxu');
 fsxu.makeDirSync('create/deep/nested/path');
 ```
 
-###emptyDir(path)
-`emptyDir` ensures that a directory is empty. Deletes directory contents if the directory is not empty. If the directory does not exist, it is created. The directory itself is not deleted.
+###emptyDirSync(path)
+`emptyDirSync` ensures that a directory is empty. Deletes directory contents if the directory is not empty. If the directory does not exist, it is created. The directory itself is not deleted.
 ```javascript
 var fsxu = require('fsxu');
 
-fsxu.emptyDir('relative-path-to-my-dir');
-fsxu.emptyDir('/absolute/path/to/my/dir');
+fsxu.emptyDirSync('relative-path-to-my-dir');
+fsxu.emptyDirSync('/absolute/path/to/my/dir');
 ```
 
 ###findUpSync(name[, path])
@@ -70,24 +70,29 @@ var files = fs.readdirSync('path/to/my/dir').filter(function(entry) {
 });
 ```
 
-###readJson(filepath)
-`readJson` returns parsed JSON content. Returns `null` if something was wrong.
+###readJsonSync(filepath)
+`readJsonSync` returns parsed JSON content. Returns `null` if something was wrong.
 ```javascript
 var fsxu = require('fsxu');
 
-var jsonObj = fsxu.readJson('path/to/file.json');
+var jsonObj = fsxu.readJsonSync('path/to/file.json');
 if(jsonObj) {
   //use the object
 }
 ```
 
-###writeJson(filepath, object)
-`writeJson` stringifies `object` and writes it to `.json` file. If the directory does not exist, it is created.
+###writeJsonSync(filepath, object)
+`writeJsonSync` stringifies `object` and writes it to `.json` file. If the directory does not exist, it is created. Returns `true` if write was successfull.
 ```javascript
 var fsxu = require('fsxu');
 
-var jsonObj = fsxu.readJson('path/to/file.json');
-if(jsonObj) {
-  //use the object
+var jsonObj = {
+  name: 'Alex',
+  email: 'psxcode@gmail.com'
+};
+
+var result = fsxu.writeJsonSync('path/to/file.json', jsonObj);
+if(result) {
+  //write successfull
 }
 ```
