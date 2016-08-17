@@ -5,9 +5,9 @@ exports.makeDirSync = makeDirSync;
 exports.findUpSync = findUpSync;
 exports.isFileSync = isFileSync;
 exports.isDirSync = isDirSync;
-exports.emptyDir = emptyDir;
-exports.readJson = readJson;
-exports.writeJson = writeJson;
+exports.emptyDirSync = emptyDirSync;
+exports.readJsonSync = readJsonSync;
+exports.writeJsonSync = writeJsonSync;
 
 function makeDirSync(p) {
 	try {
@@ -63,7 +63,7 @@ function isDirSync(p) {
 	}
 }
 
-function emptyDir(p) {
+function emptyDirSync(p) {
 
 	//ensure path exists
 	if (true !== isDirSync(p)) return makeDirSync(p);
@@ -76,7 +76,7 @@ function emptyDir(p) {
 		})
 		.forEach(function (dirname) {
 			var dirpath = path.join(p, dirname);
-			emptyDir(dirpath);
+			emptyDirSync(dirpath);
 			try {
 				fs.rmdirSync(dirpath);
 			} catch (e) {
@@ -99,7 +99,7 @@ function emptyDir(p) {
 	return true;
 }
 
-function readJson(filepath) {
+function readJsonSync(filepath) {
 	try {
 		return JSON.parse(fs.readFileSync(filepath, {encoding: 'utf8'}));
 	} catch (e) {
@@ -107,7 +107,7 @@ function readJson(filepath) {
 	}
 }
 
-function writeJson(filepath, obj) {
+function writeJsonSync(filepath, obj) {
 
 	//get path
 	var p = path.dirname(filepath);
