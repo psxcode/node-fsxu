@@ -1,0 +1,43 @@
+{
+  "name": "fsxu",
+  "version": "0.0.1",
+  "description": "minimal filesystem utility functions inspired by fs-extra",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Alex Feinstein",
+    "url": "https://github.com/psxcode"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/psxcode/node-fsxu",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/psxcode/node-fsxu"
+  },
+  "dependencies": {},
+  "keywords": [
+    "fs",
+    "file",
+    "file system",
+    "copy",
+    "directory",
+    "extra",
+    "mkdirp",
+    "mkdir",
+    "mkdirs",
+    "recursive",
+    "json",
+    "read",
+    "write",
+    "extra",
+    "delete",
+    "remove",
+    "touch",
+    "create",
+    "text",
+    "output",
+    "move"
+  ]
+}
