@@ -1,40 +1,46 @@
+"use strict";
+
 var fs = require('fs');
 var path = require('path');
 
 exports.makeDirSync = makeDirSync;
 exports.findUpSync = findUpSync;
+exports.listDirSync = listDirSync;
 exports.isFileSync = isFileSync;
 exports.isDirSync = isDirSync;
 exports.emptyDirSync = emptyDirSync;
+exports.rmDirSync = rmDirSync;
+exports.rmFileSync = rmFileSync;
+exports.rmSync = rmSync;
 exports.readJsonSync = readJsonSync;
 exports.writeJsonSync = writeJsonSync;
 
 function makeDirSync(p) {
 	try {
 		fs.mkdirSync(p);
+		return true;
 	} catch (e) {
 		switch (e.code) {
+			//part of the path does not exist
 			case 'ENOENT':
-				if (path.dirname(p) === p) return null;
-
-				makeDirSync(path.dirname(p));
-				makeDirSync(p);
-				break;
+				return path.dirname(p) !== p && makeDirSync(path.dirname(p)) && makeDirSync(p);
+			//path already exist
+			case 'EEXIST':
+				return true;
+			//failed for some reason
+			default:
+				return false;
 		}
 	}
-
-	return true;
 }
 
 function findUpSync(filename, p) {
-	if (!p) p = __dirname;
+	p = p ? path.resolve(p) : __dirname;
 
 	try {
-		p = path.join(p, filename);
-		fs.statSync(p);
-		return path.dirname(p);
+		fs.statSync(path.join(p, filename));
+		return p;
 	} catch (e) {
-		console.log(e.code);
 		switch (e.code) {
 			case 'ENOENT':
 				return (path.dirname(p) === p) ? null : findUpSync(filename, path.dirname(p));
@@ -42,69 +48,100 @@ function findUpSync(filename, p) {
 	}
 }
 
-function isFileSync(filename, p) {
-	if (!filename || typeof filename !== 'string') return 'EINVAL';
-	if (!p || typeof p !== 'string') p = null;
-
-	try {
-		return fs.statSync(p ? path.join(p, filename) : filename).isFile();
-	} catch (e) {
-		return e.code;
+function isFileSync(pathname) {
+	if (pathname && typeof pathname === 'string') {
+		try { return fs.statSync(pathname).isFile(); } catch (e) {}
 	}
+
+	return false;
 }
 
-function isDirSync(p) {
-	if (!p || typeof p !== 'string') return 'EINVAL';
-
-	try {
-		return fs.statSync(p).isDirectory();
-	} catch (e) {
-		return e.code;
+function isDirSync(pathname) {
+	if (pathname && typeof pathname === 'string') {
+		try { return fs.statSync(pathname).isDirectory(); } catch (e) {}
 	}
+
+	return false;
+}
+
+function listDirSync(p) {
+	try {
+		var entries = fs.readdirSync(p);
+	} catch (e) { return null; }
+
+	//fill actual paths instead of names
+	for (var i = 0; i < entries.length; ++i) {
+		entries[i] = path.join(p, entries[i]);
+	}
+
+	return entries;
 }
 
 function emptyDirSync(p) {
 
 	//ensure path exists
-	if (true !== isDirSync(p)) return makeDirSync(p);
+	if (!isDirSync(p)) return makeDirSync(p);
 
-	var entries = fs.readdirSync(p);
+	var entries = listDirSync(p);
 
-	entries
-		.filter(function (name) {
-			return true === isDirSync(path.join(p, name));
-		})
-		.forEach(function (dirname) {
-			var dirpath = path.join(p, dirname);
-			emptyDirSync(dirpath);
-			try {
-				fs.rmdirSync(dirpath);
-			} catch (e) {
-				console.log(e);
-			}
-		});
-
-	entries
-		.filter(function (name) {
-			return true === isFileSync(path.join(p, name));
-		})
-		.forEach(function (filename) {
-			try {
-				fs.unlinkSync(path.join(p, filename));
-			} catch (e) {
-				console.log(e);
-			}
-		});
+	//not using standard forEach here, cause it is much slower
+	for (var i = 0; i < entries.length; ++i) {
+		rmSync(entries[i], true);
+	}
 
 	return true;
+}
+
+function rmFileSync(filepath) {
+	try {
+		fs.unlinkSync(filepath);
+		return true;
+	} catch (e) {
+		return e.code === 'ENOENT';
+	}
+}
+
+function rmDirSync(filepath, recursive) {
+
+	if (recursive) {
+		var entries = listDirSync(filepath);
+		//for is much faster than standard forEach
+
+		for (var i = 0; i < entries.length; ++i) {
+			if (isDirSync(entries[i])) {
+				rmDirSync(entries[i], recursive);
+				try { fs.rmdirSync(entries[i]); } catch (e) {}
+			} else if (isFileSync(entries[i])) {
+				rmFileSync(entries[i]);
+			}
+		}
+	}
+
+	try {
+		fs.rmdirSync(filepath);
+		return true;
+	} catch (e) {
+		return e.code === 'ENOENT';
+	}
+}
+
+function rmSync(filepath, recursive) {
+
+	if (isFileSync(filepath)) {
+		return rmFileSync(filepath);
+	} else if (isDirSync(filepath)) {
+		return rmDirSync(filepath, recursive);
+	}
+
+	return false;
 }
 
 function readJsonSync(filepath) {
 	try {
 		return JSON.parse(fs.readFileSync(filepath, {encoding: 'utf8'}));
-	} catch (e) {
-		return null;
-	}
+	} catch (e) {}
+
+	return null;
 }
 
 function writeJsonSync(filepath, obj) {
@@ -113,13 +150,12 @@ function writeJsonSync(filepath, obj) {
 	var p = path.dirname(filepath);
 
 	//ensure path exists
-	if (true !== isDirSync(p)) makeDirSync(p);
-
-	try {
-		fs.writeFileSync(filepath, JSON.stringify(obj));
-	} catch (e) {
-		return null;
+	if (makeDirSync(p)) {
+		try {
+			fs.writeFileSync(filepath, JSON.stringify(obj));
+			return true;
+		} catch (e) {}
 	}
 
-	return true;
+	return false;
 }
