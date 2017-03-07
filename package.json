@@ -4,9 +4,7 @@
   "description": "minimal filesystem utility functions inspired by fs-extra",
   "main": "lib/index.js",
   "scripts": {
-    "test": "gulp mocha",
-    "watch": "gulp watch",
-    "cover": "istanbul cover _mocha"
+    "test": "istanbul cover _mocha -- ./test/*.test.js"
   },
   "author": {
     "name": "Alex Feinstein",
@@ -21,13 +19,10 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-istanbul": "^1.1.1",
-    "gulp-mocha": "^4.0.1",
-    "gulp-spawn-mocha": "^3.1.0",
-    "isparta": "^4.0.0",
-    "mock-fs": "^4.1.0",
-    "through2": "^2.0.3"
+    "chai-fs": "^1.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "*",
+    "mock-fs": "*"
   },
   "keywords": [
     "fs",

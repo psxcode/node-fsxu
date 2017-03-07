@@ -1,7 +1,10 @@
-const expect = require('chai').expect,
+const chai = require('chai'),
+	expect = chai.expect,
 	mockfs = require('mock-fs'),
 	isFileSync = require('../lib/is').isFileSync,
 	isDirSync = require('../lib/is').isDirSync;
+
+chai.use(require('chai-fs'));
 
 describe('is', function () {
 
@@ -19,29 +22,76 @@ describe('is', function () {
 		mockfs.restore();
 	});
 
-	it('isFileSync', function (done) {
+	describe('isFileSync', function () {
 
-		const actual1 = isFileSync('path/to/file.txt'),
-			actual2 = isFileSync('path/to'),
-			actual3 = isFileSync('invalid');
+		it('returns true if path is a file', function () {
+			const filepath = 'path/to/file.txt';
 
-		expect(actual1).to.equal(true);
-		expect(actual2).to.equal(false);
-		expect(actual3).to.equal(false);
+			expect(filepath).file('file should exist');
+			expect(isFileSync(filepath)).true;
+		});
 
-		done();
+		it('returns false if path is not a file', function () {
+			const filepath = 'path/to';
+
+			expect(filepath).path('path should exist');
+			expect(isFileSync(filepath)).false;
+		});
+
+		it('returns false if path is not a file', function () {
+			const filepath = 'invalid';
+
+			expect(filepath).not.path('path should not exist');
+			expect(isFileSync(filepath)).false;
+		});
+
+		it('should return false if path is empty', function () {
+			const filepath = '';
+
+			expect(isFileSync(filepath)).false;
+		});
+
+		it('returns false if path is not a string', function () {
+			const filepath = {};
+
+			expect(isFileSync(filepath)).false;
+		});
 	});
 
-	it('isDirSync', function (done) {
+	describe('isDirSync', function () {
 
-		const actual1 = isDirSync('path/to'),
-			actual2 = isDirSync('path/to/file.txt'),
-			actual3 = isDirSync('invalid');
+		it('returns true if path is a directory', function () {
+			const dirpath = 'path/to';
 
-		expect(actual1).to.equal(true);
-		expect(actual2).to.equal(false);
-		expect(actual3).to.equal(false);
+			expect(dirpath).directory('directory should exist');
+			expect(isDirSync(dirpath)).true;
+		});
 
-		done();
+		it('returns false if path is not a directory', function () {
+			const dirpath = 'path/to/file.txt';
+
+			expect(dirpath).path('path should exist');
+			expect(isDirSync(dirpath)).false;
+		});
+
+		it('returns false if path is not a file', function () {
+			const dirpath = 'invalid';
+
+			expect(dirpath).not.path('path should not exist');
+			expect(isDirSync(dirpath)).false;
+		});
+
+		it('should resolve to cuurent dir if path is empty', function () {
+			const dirpath = '';
+
+			expect(dirpath).path('path should exist');
+			expect(isDirSync(dirpath)).true;
+		});
+
+		it('returns false if path is not a string', function () {
+			const dirpath = {};
+
+			expect(isDirSync(dirpath)).false;
+		});
 	});
 });

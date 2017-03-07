@@ -1,9 +1,12 @@
-const expect = require('chai').expect,
+const chai = require('chai'),
+	expect = chai.expect,
+	fs = require('fs'),
 	mockfs = require('mock-fs'),
 	rmDirSync = require('../lib/rm').rmDirSync,
 	rmFileSync = require('../lib/rm').rmFileSync,
-	rmSync = require('../lib/rm').rmSync,
-	fs = require('fs');
+	rmSync = require('../lib/rm').rmSync;
+
+chai.use(require('chai-fs'));
 
 describe('rmDirSync', function () {
 
@@ -21,38 +24,51 @@ describe('rmDirSync', function () {
 		mockfs.restore();
 	});
 
-	it('rmDirSync empty dir', function (done) {
+	it('should remove empty dir', function () {
+		const dirpath = './path/to/empty-dir';
 
-		const dirpath = './path/to/empty-dir',
-			res = rmDirSync(dirpath);
-
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(dirpath).directory('directory should exist before test');
+		expect(rmDirSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
 	});
 
-	it('rmDirSync recursive', function (done) {
+	it('should remove content recursively', function () {
+		const dirpath = './path';
 
-		const res = rmDirSync('./path', true);
-
-		expect(res).to.equal(true);
-
-		fs.stat('./path/to/file.txt', function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(dirpath).directory('directory should exist before test');
+		expect(rmDirSync(dirpath, true)).true;
+		expect(dirpath).not.path('path should not exist after test');
 	});
 
-	it('rmDirSync not existing returns true', function (done) {
+	it('returns \'true\' if path does not exist', function () {
+		const dirpath = './not-existing';
 
-		const res = rmDirSync('./not-existing');
+		expect(dirpath).not.path('path should not exist before test');
+		expect(rmDirSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
+	});
 
-		expect(res).to.equal(true);
+	it('returns \'false\' if path is a file', function () {
+		const dirpath = './path/to/file.txt';
 
-		done();
+		expect(dirpath).file('file should exist before test');
+		expect(rmDirSync(dirpath)).false;
+		expect(dirpath).file('file should exist after test');
+	});
+
+	it('should resolve to current dir if path is empty', function () {
+		const dirpath = '';
+
+		expect(dirpath).path('path should exist before test');
+		expect(rmDirSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
+	});
+
+	it('should return false if path is not string', function () {
+		const dirpath = {};
+
+		expect(String(dirpath)).not.path('path should not exist before test');
+		expect(rmDirSync(dirpath)).false;
 	});
 });
 
@@ -72,37 +88,40 @@ describe('rmFileSync', function() {
 		mockfs.restore();
 	});
 
-	it('rmFileSync', function (done) {
+	it('should remove file', function () {
+		const filepath = './path/to/file.txt';
 
-		const filepath = './path/to/file.txt',
-			res = rmFileSync(filepath);
-
-		expect(res).to.equal(true);
-
-		fs.stat(filepath, function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(filepath).file('file should exist before test');
+		expect(rmFileSync(filepath)).true;
+		expect(filepath).not.path('path should not exist after test');
 	});
 
-	it('rmFileSync not existing return true', function (done) {
+	it('returns \'true\' if path does not exist', function () {
+		const filepath = './path/to/not-existing';
 
-		const filepath = './path/to/not-existing',
-			res = rmFileSync(filepath);
-
-		expect(res).to.equal(true);
-
-		done();
+		expect(filepath).not.path('path should not exist before test');
+		expect(rmFileSync(filepath)).true;
+		expect(filepath).not.path('path should not exist after test');
 	});
 
-	it('rmFileSync returns false if not a file', function (done) {
+	it('returns false if path is not a file', function () {
+		const filepath = './path/to';
 
-		const filepath = './path/to',
-			res = rmFileSync(filepath);
+		expect(filepath).not.file('path should not be a file before test');
+		expect(rmFileSync(filepath)).false;
+		expect(filepath).path('path should exist after test');
+	});
 
-		expect(res).to.equal(false);
+	it('should return false if path is empty', function () {
+		const dirpath = '';
 
-		done();
+		expect(rmFileSync(dirpath)).false;
+	});
+
+	it('should return false if path is not a string', function () {
+		const dirpath = {};
+
+		expect(rmFileSync(dirpath)).false;
 	});
 });
 
@@ -122,51 +141,48 @@ describe('rmSync', function() {
 		mockfs.restore();
 	});
 
-	it('rmSync removes file', function (done) {
+	it('rmSync removes file', function () {
+		const filepath = './path/to/file.txt';
 
-		const filepath = './path/to/file.txt',
-			res = rmSync(filepath);
-
-		expect(res).to.equal(true);
-
-		fs.stat(filepath, function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(filepath).file('file should exist before test');
+		expect(rmSync(filepath)).true;
+		expect(filepath).not.path('path should not exist after test');
 	});
 
-	it('rmSync removes empty dir', function (done) {
+	it('rmSync removes empty dir', function () {
+		const dirpath = './path/to/empty-dir';
 
-		const dirpath = './path/to/empty-dir',
-			res = rmSync(dirpath);
-
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(dirpath).directory('directory should exist before test');
+		expect(rmSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
 	});
 
-	it('rmSync removes dir recursive', function (done) {
+	it('rmSync removes dir recursive', function () {
+		const dirpath = './path/to';
 
-		const dirpath = './path/to',
-			res = rmSync(dirpath, true);
-
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function (err) {
-			expect(err).to.exist;
-			done();
-		});
+		expect(dirpath).directory('directory should exist before test');
+		expect(rmSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
 	});
 
-	it('rmSync not existing returns true', function (done) {
+	it('rmSync not existing returns true', function () {
+		const dirpath = './not-existing';
 
-		const res = rmSync('./not-existing');
+		expect(dirpath).not.path('path should not exist after test');
+		expect(rmSync(dirpath)).true;
+	});
 
-		expect(res).to.equal(true);
+	it('should resolve to current dir if path is empty', function () {
+		const dirpath = '';
 
-		done();
+		expect(dirpath).path('path should exist before test');
+		expect(rmSync(dirpath)).true;
+		expect(dirpath).not.path('path should not exist after test');
+	});
+
+	it('should return false if path is not a string', function () {
+		const dirpath = {};
+
+		expect(rmSync(dirpath)).false;
 	});
 });

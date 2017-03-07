@@ -1,16 +1,26 @@
-const expect = require('chai').expect,
+const chai = require('chai'),
+	expect = chai.expect,
 	fs = require('fs'),
 	mockfs = require('mock-fs'),
 	emptyDirSync = require('../lib/dir').emptyDirSync,
-	makeDirSync = require('../lib/dir').makeDirSync;
+	makeDirSync = require('../lib/dir').makeDirSync,
+	_0000 = parseInt('0000', 8);
 
-describe('makeDirSync', function() {
+chai.use(require('chai-fs'));
+
+describe('makeDirSync', function () {
 
 	beforeEach(function () {
 		mockfs({
 			'path/to': {
 				'file.txt': 'content',
-				'empty-dir': {}
+				'empty-dir': {},
+				'no-access': mockfs.directory({
+					mode: _0000,
+					items: {
+						'dir': {}
+					}
+				})
 			},
 			'file.txt': 'content'
 		});
@@ -20,54 +30,60 @@ describe('makeDirSync', function() {
 		mockfs.restore();
 	});
 
-	it('makeDirSync new dir', function(done) {
-		const dirpath = 'path/to/new-dir',
-			res = makeDirSync(dirpath);
+	it('makeDirSync new dir', function () {
+		const dirpath = 'path/to/new-dir';
 
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function(err, stat) {
-
-			expect(err).to.not.exist;
-			expect(stat.isDirectory()).to.equal(true);
-			done();
-		});
+		expect(dirpath).not.path('path should not exist before test');
+		expect(makeDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test');
 	});
 
-	it('makeDirSync new dir recursive', function(done) {
-		const dirpath = 'path/to/new/dir',
-			res = makeDirSync(dirpath);
+	it('makeDirSync new dir recursive', function () {
+		const dirpath = 'path/to/new/dir';
 
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function(err, stat) {
-
-			expect(err).to.not.exist;
-			expect(stat.isDirectory()).to.equal(true);
-			done();
-		});
+		expect(dirpath).not.path('path should not exist before test');
+		expect(makeDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test');
 	});
 
-	it('makeDirSync, dir exists', function(done) {
-		const dirpath = 'path/to/empty-dir',
-			res = makeDirSync(dirpath);
+	it('makeDirSync, dir exists', function () {
+		const dirpath = 'path/to/empty-dir';
 
-		expect(res).to.equal(true);
-
-		done();
+		expect(dirpath).directory('directory should exist before test');
+		expect(makeDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test');
 	});
 
-	it('makeDirSync, target exists, is a file', function(done) {
-		const dirpath = 'path/to/file.txt',
-			res = makeDirSync(dirpath);
+	it('makeDirSync, target exists, is a file', function () {
+		const dirpath = 'path/to/file.txt';
 
-		expect(res).to.equal(false);
+		expect(dirpath).file('file should exist before test');
+		expect(makeDirSync(dirpath)).false;
+		expect(dirpath).file('file should exist after test');
+	});
 
-		done();
+	it('should return false if directory exists, but cannot be accessed', function () {
+		const dirpath = 'path/to/no-access/dir';
+
+		expect(makeDirSync(dirpath)).false;
+	});
+
+	it('should resolve to current dir if path is empty', function () {
+		const dirpath = '';
+
+		expect(dirpath).path('path should exist before test');
+		expect(makeDirSync(dirpath)).true;
+	});
+
+	it('should return false if path is not a string', function () {
+		const dirpath = {};
+
+		expect(String(dirpath)).not.path('path should not exist before test');
+		expect(makeDirSync(dirpath)).false;
 	});
 });
 
-describe('emptyDirSync', function() {
+describe('emptyDirSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -83,55 +99,49 @@ describe('emptyDirSync', function() {
 		mockfs.restore();
 	});
 
-	it('emptyDirSync makes new dir', function(done) {
-		const dirpath = 'path/to/new-dir',
-			res = emptyDirSync(dirpath);
+	it('emptyDirSync makes new dir', function () {
+		const dirpath = 'path/to/new-dir';
 
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function(err, stat) {
-
-			expect(err).to.not.exist;
-			expect(stat.isDirectory()).to.equal(true);
-			done();
-		});
+		expect(dirpath).not.path('path should not exist before test');
+		expect(emptyDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test').and.empty;
 	});
 
-	it('emptyDirSync makes new dir recursive', function(done) {
-		const dirpath = 'path/to/new/dir',
-			res = emptyDirSync(dirpath);
+	it('emptyDirSync makes new dir recursive', function () {
+		const dirpath = 'path/to/new/dir';
 
-		expect(res).to.equal(true);
-
-		fs.stat(dirpath, function(err, stat) {
-
-			expect(err).to.not.exist;
-			expect(stat.isDirectory()).to.equal(true);
-			done();
-		});
+		expect(dirpath).not.path('path should not exist before test');
+		expect(emptyDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test').and.empty;
 	});
 
-	it('emptyDirSync, empties existing dir', function(done) {
-		const dirpath = 'path/to',
-			res = emptyDirSync(dirpath);
+	it('emptyDirSync, empties existing dir', function () {
+		const dirpath = 'path/to';
 
-		expect(res).to.equal(true);
-
-		fs.readdir(dirpath, function(err, entries) {
-
-			expect(err).to.not.exist;
-			expect(entries).to.exist;
-			expect(entries.length).to.equal(0);
-			done();
-		});
+		expect(dirpath).directory('directory should exist before test');
+		expect(emptyDirSync(dirpath)).true;
+		expect(dirpath).directory('directory should exist after test').and.empty;
 	});
 
-	it('makeDirSync, target exists, is a file', function(done) {
-		const dirpath = 'path/to/file.txt',
-			res = emptyDirSync(dirpath);
+	it('makeDirSync, target exists, is a file', function () {
+		const dirpath = 'path/to/file.txt';
 
-		expect(res).to.equal(false);
+		expect(dirpath).file('file should exist before test');
+		expect(emptyDirSync(dirpath)).false;
+		expect(dirpath).file('file should exist after test');
+	});
 
-		done();
+	it('should resolve to current dir if path is empty', function () {
+		const dirpath = '';
+
+		expect(dirpath).path('path should exist before test');
+		expect(emptyDirSync(dirpath)).true;
+	});
+
+	it('should return false if path is not a string', function () {
+		const dirpath = {};
+
+		expect(String(dirpath)).not.path('path should not exist before test');
+		expect(emptyDirSync(dirpath)).false;
 	});
 });

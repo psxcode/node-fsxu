@@ -18,29 +18,42 @@ describe('list', function() {
 		mockfs.restore();
 	});
 
-	it('listDirSync', function(done) {
+	it('listDirSync', function() {
 		const res = listDirSync('path/to');
 
-		expect(res).to.exist;
-		expect(res.length).to.equal(2);
-
-		done();
+		expect(res).instanceOf(Array);
+		expect(res).length(2);
 	});
 
-	it('listDirSync empty dir', function(done) {
+	it('listDirSync empty dir', function() {
 		const res = listDirSync('path/to/empty-dir');
 
-		expect(res).to.exist;
-		expect(res.length).to.equal(0);
-
-		done();
+		expect(res).instanceOf(Array);
+		expect(res).empty;
 	});
 
-	it('listDirSync not existing returns null', function(done) {
+	it('should use current dir if path is empty', function() {
+		const res = listDirSync('');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(2);
+	});
+
+	it('listDirSync not existing returns null', function() {
 		const res = listDirSync('path/to/not-existing');
 
-		expect(res).to.equal(null);
+		expect(res).null;
+	});
 
-		done();
+	it('should return null if path is not a string', function() {
+		const res = listDirSync({});
+
+		expect(res).null;
+	});
+
+	it('should return null if path is not a string', function() {
+		const res = listDirSync({});
+
+		expect(res).null;
 	});
 });

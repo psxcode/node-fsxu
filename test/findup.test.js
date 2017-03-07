@@ -3,7 +3,7 @@ const path = require('path'),
 	mockfs = require('mock-fs'),
 	findFileUpSync = require('../lib/findup').findFileUpSync;
 
-describe('findFileUpSync', function() {
+describe('findFileUpSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -13,7 +13,8 @@ describe('findFileUpSync', function() {
 					'empty-dir': {}
 				},
 				'file.txt': 'content'
-			}
+			},
+			'file.jpg': 'content'
 		});
 	});
 
@@ -21,19 +22,46 @@ describe('findFileUpSync', function() {
 		mockfs.restore();
 	});
 
-	it('finds a file', function(done) {
-		const res = findFileUpSync('file.txt', './root/path/to/empty-dir');
+	it('finds a file starting from provided path', function () {
+		const dirpath = './root/path/to/empty-dir',
+			filename = 'file.txt',
+			actualPath = findFileUpSync(filename, dirpath),
+			expectedPath = path.resolve('root');
 
-		expect(res).to.equal(path.resolve('root'));
-
-		done();
+		expect(actualPath).equal(expectedPath);
 	});
 
-	it('returns null if not found', function(done) {
-		const res = findFileUpSync('file.png', './root/path/to/empty-dir');
+	it('finds a file starting from __dirname if path is not provided', function () {
+		const dirpath = './root/path/to/empty-dir',
+			filename = 'file.jpg',
+			actualPath = findFileUpSync(filename),
+			expectedPath = path.resolve('./');
 
-		expect(res).to.equal(null);
+		expect(actualPath).equal(expectedPath);
+	});
 
-		done();
+	it('finds a file starting from __dirname if provided path is not a string', function () {
+		const dirpath = {},
+			filename = 'file.jpg',
+			actualPath = findFileUpSync(filename, dirpath),
+			expectedPath = path.resolve('./');
+
+		expect(actualPath).equal(expectedPath);
+	});
+
+	it('returns null if not found', function () {
+		const dirpath = './root/path/to/empty-dir',
+			filename = 'file.png',
+			actualPath = findFileUpSync(filename, dirpath);
+
+		expect(actualPath).null;
+	});
+
+	it('returns null filename is not string', function () {
+		const dirpath = './root/path/to/empty-dir',
+			filename = {},
+			actualPath = findFileUpSync(filename, dirpath);
+
+		expect(actualPath).null;
 	});
 });
