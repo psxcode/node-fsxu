@@ -1,8 +1,8 @@
 const expect = require('chai').expect,
 	mockfs = require('mock-fs'),
-	{listSync, listDirectoriesSync, listFilesSync} = require('../lib/list');
+	{listNamesSync, listPathsSync, listDirNamesSync, listDirPathsSync, listFileNamesSync, listFilePathsSync} = require('../lib/list');
 
-describe('listSync', function () {
+describe('listNamesSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -19,52 +19,46 @@ describe('listSync', function () {
 	});
 
 	it('should return array of strings', function () {
-		const res = listSync('path/to');
+		const res = listNamesSync('path/to');
 
 		expect(res).instanceOf(Array);
 		expect(res).length(2);
 	});
 
-	it('should return resolved paths', function () {
-		const res = listSync('path/to');
-
-		expect(res[0][0]).equal('/');
-	});
-
-	it('should return names if \'resolve\' flag is not set', function () {
-		const res = listSync('path/to', false);
+	it('should return names', function () {
+		const res = listNamesSync('path/to');
 
 		expect(res[0][0]).not.equal('/');
 	});
 
 	it('should return empty array if directory is empty', function () {
-		const res = listSync('path/to/empty-dir');
+		const res = listNamesSync('path/to/empty-dir');
 
 		expect(res).instanceOf(Array);
 		expect(res).empty;
 	});
 
 	it('should return \'null\' if path does not exist', function () {
-		const res = listSync('path/to/not-existing');
+		const res = listNamesSync('path/to/not-existing');
 
 		expect(res).null;
 	});
 
 	it('should use current dir if path is empty', function () {
-		const res = listSync('');
+		const res = listNamesSync('');
 
 		expect(res).instanceOf(Array);
 		expect(res).length(2);
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listSync({});
+		const res = listNamesSync({});
 
 		expect(res).null;
 	});
 });
 
-describe('listDirectoriesSync', function () {
+describe('listPathsSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -81,52 +75,46 @@ describe('listDirectoriesSync', function () {
 	});
 
 	it('should return array of strings', function () {
-		const res = listDirectoriesSync('path/to');
+		const res = listPathsSync('path/to');
 
 		expect(res).instanceOf(Array);
-		expect(res).length(1);
+		expect(res).length(2);
 	});
 
 	it('should return resolved paths', function () {
-		const res = listDirectoriesSync('path/to');
+		const res = listPathsSync('path/to');
 
 		expect(res[0][0]).equal('/');
 	});
 
-	it('should return names if \'resolve\' flag is not set', function () {
-		const res = listDirectoriesSync('path/to', false);
-
-		expect(res[0][0]).not.equal('/');
-	});
-
 	it('should return empty array if directory is empty', function () {
-		const res = listDirectoriesSync('path/to/empty-dir');
+		const res = listPathsSync('path/to/empty-dir');
 
 		expect(res).instanceOf(Array);
 		expect(res).empty;
 	});
 
 	it('should return \'null\' if path does not exist', function () {
-		const res = listDirectoriesSync('path/to/not-existing');
+		const res = listPathsSync('path/to/not-existing');
 
 		expect(res).null;
 	});
 
 	it('should use current dir if path is empty', function () {
-		const res = listDirectoriesSync('');
+		const res = listPathsSync('');
 
 		expect(res).instanceOf(Array);
-		expect(res).length(1);
+		expect(res).length(2);
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listDirectoriesSync({});
+		const res = listPathsSync({});
 
 		expect(res).null;
 	});
 });
 
-describe('listFilesSync', function () {
+describe('listDirNamesSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -143,46 +131,208 @@ describe('listFilesSync', function () {
 	});
 
 	it('should return array of strings', function () {
-		const res = listFilesSync('path/to');
+		const res = listDirNamesSync('path/to');
 
 		expect(res).instanceOf(Array);
 		expect(res).length(1);
 	});
 
-	it('should return resolved paths', function () {
-		const res = listFilesSync('path/to');
-
-		expect(res[0][0]).equal('/');
-	});
-
-	it('should return names if \'resolve\' flag is not set', function () {
-		const res = listFilesSync('path/to', false);
+	it('should return names', function () {
+		const res = listDirNamesSync('path/to');
 
 		expect(res[0][0]).not.equal('/');
 	});
 
 	it('should return empty array if directory is empty', function () {
-		const res = listFilesSync('path/to/empty-dir');
+		const res = listDirNamesSync('path/to/empty-dir');
 
 		expect(res).instanceOf(Array);
 		expect(res).empty;
 	});
 
 	it('should return \'null\' if path does not exist', function () {
-		const res = listFilesSync('path/to/not-existing');
+		const res = listDirNamesSync('path/to/not-existing');
 
 		expect(res).null;
 	});
 
 	it('should use current dir if path is empty', function () {
-		const res = listFilesSync('');
+		const res = listDirNamesSync('');
 
 		expect(res).instanceOf(Array);
 		expect(res).length(1);
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listFilesSync({});
+		const res = listDirNamesSync({});
+
+		expect(res).null;
+	});
+});
+
+describe('listDirPathsSync', function () {
+
+	beforeEach(function () {
+		mockfs({
+			'path/to': {
+				'file.txt': 'content',
+				'empty-dir': {}
+			},
+			'file.txt': 'content'
+		});
+	});
+
+	afterEach(function () {
+		mockfs.restore();
+	});
+
+	it('should return array of strings', function () {
+		const res = listDirPathsSync('path/to');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return names', function () {
+		const res = listDirPathsSync('path/to');
+
+		expect(res[0][0]).equal('/');
+	});
+
+	it('should return empty array if directory is empty', function () {
+		const res = listDirPathsSync('path/to/empty-dir');
+
+		expect(res).instanceOf(Array);
+		expect(res).empty;
+	});
+
+	it('should return \'null\' if path does not exist', function () {
+		const res = listDirPathsSync('path/to/not-existing');
+
+		expect(res).null;
+	});
+
+	it('should use current dir if path is empty', function () {
+		const res = listDirPathsSync('');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return \'null\' if path is not a string', function () {
+		const res = listDirPathsSync({});
+
+		expect(res).null;
+	});
+});
+
+describe('listFileNamesSync', function () {
+
+	beforeEach(function () {
+		mockfs({
+			'path/to': {
+				'file.txt': 'content',
+				'empty-dir': {}
+			},
+			'file.txt': 'content'
+		});
+	});
+
+	afterEach(function () {
+		mockfs.restore();
+	});
+
+	it('should return array of strings', function () {
+		const res = listFileNamesSync('path/to');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return names', function () {
+		const res = listFileNamesSync('path/to');
+
+		expect(res[0][0]).not.equal('/');
+	});
+
+	it('should return empty array if directory is empty', function () {
+		const res = listFileNamesSync('path/to/empty-dir');
+
+		expect(res).instanceOf(Array);
+		expect(res).empty;
+	});
+
+	it('should return \'null\' if path does not exist', function () {
+		const res = listFileNamesSync('path/to/not-existing');
+
+		expect(res).null;
+	});
+
+	it('should use current dir if path is empty', function () {
+		const res = listFileNamesSync('');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return \'null\' if path is not a string', function () {
+		const res = listFileNamesSync({});
+
+		expect(res).null;
+	});
+});
+
+describe('listFilePathsSync', function () {
+
+	beforeEach(function () {
+		mockfs({
+			'path/to': {
+				'file.txt': 'content',
+				'empty-dir': {}
+			},
+			'file.txt': 'content'
+		});
+	});
+
+	afterEach(function () {
+		mockfs.restore();
+	});
+
+	it('should return array of strings', function () {
+		const res = listFilePathsSync('path/to');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return resolved names', function () {
+		const res = listFilePathsSync('path/to');
+
+		expect(res[0][0]).equal('/');
+	});
+
+	it('should return empty array if directory is empty', function () {
+		const res = listFilePathsSync('path/to/empty-dir');
+
+		expect(res).instanceOf(Array);
+		expect(res).empty;
+	});
+
+	it('should return \'null\' if path does not exist', function () {
+		const res = listFilePathsSync('path/to/not-existing');
+
+		expect(res).null;
+	});
+
+	it('should use current dir if path is empty', function () {
+		const res = listFilePathsSync('');
+
+		expect(res).instanceOf(Array);
+		expect(res).length(1);
+	});
+
+	it('should return \'null\' if path is not a string', function () {
+		const res = listFilePathsSync({});
 
 		expect(res).null;
 	});

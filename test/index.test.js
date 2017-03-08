@@ -13,9 +13,12 @@ const expect = require('chai').expect,
 		'findFileUpSync',
 
 		// list
-		'listSync',
-		'listDirectoriesSync',
-		'listFilesSync',
+		'listFileNamesSync',
+		'listFilePathsSync',
+		'listDirNamesSync',
+		'listDirPathsSync',
+		'listNamesSync',
+		'listPathsSync',
 
 		// rm
 		'rmDirSync',
