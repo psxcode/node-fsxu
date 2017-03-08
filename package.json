@@ -1,6 +1,6 @@
 {
   "name": "fsxu",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "minimal filesystem utility functions inspired by fs-extra",
   "main": "./lib/index.js",
   "scripts": {
