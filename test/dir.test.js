@@ -2,8 +2,7 @@ const chai = require('chai'),
 	expect = chai.expect,
 	fs = require('fs'),
 	mockfs = require('mock-fs'),
-	emptyDirSync = require('../lib/dir').emptyDirSync,
-	makeDirSync = require('../lib/dir').makeDirSync,
+	{makeDirSync, emptyDirSync} = require('../lib/dir'),
 	_0000 = parseInt('0000', 8);
 
 chai.use(require('chai-fs'));

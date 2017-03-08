@@ -2,9 +2,7 @@ const chai = require('chai'),
 	expect = chai.expect,
 	fs = require('fs'),
 	mockfs = require('mock-fs'),
-	rmDirSync = require('../lib/rm').rmDirSync,
-	rmFileSync = require('../lib/rm').rmFileSync,
-	rmSync = require('../lib/rm').rmSync;
+	{rmSync, rmDirSync, rmFileSync} = require('../lib/rm');
 
 chai.use(require('chai-fs'));
 
@@ -72,7 +70,7 @@ describe('rmDirSync', function () {
 	});
 });
 
-describe('rmFileSync', function() {
+describe('rmFileSync', function () {
 
 	beforeEach(function () {
 		mockfs({
@@ -125,7 +123,7 @@ describe('rmFileSync', function() {
 	});
 });
 
-describe('rmSync', function() {
+describe('rmSync', function () {
 
 	beforeEach(function () {
 		mockfs({

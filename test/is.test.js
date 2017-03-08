@@ -1,8 +1,7 @@
 const chai = require('chai'),
 	expect = chai.expect,
 	mockfs = require('mock-fs'),
-	isFileSync = require('../lib/is').isFileSync,
-	isDirSync = require('../lib/is').isDirSync;
+	{isFileSync, isDirSync} = require('../lib/is');
 
 chai.use(require('chai-fs'));
 

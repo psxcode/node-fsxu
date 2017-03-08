@@ -1,7 +1,7 @@
 const path = require('path'),
 	expect = require('chai').expect,
 	mockfs = require('mock-fs'),
-	findFileUpSync = require('../lib/findup').findFileUpSync;
+	{findFileUpSync} = require('../lib/findup');
 
 describe('findFileUpSync', function () {
 
