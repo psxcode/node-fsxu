@@ -3,6 +3,7 @@
 	"version": "0.2.0",
 	"description": "minimal filesystem utility functions inspired by fs-extra",
 	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"test": "nyc npm run mocha && npm run report",
 		"test:watch": "npm run mocha -- --watch",
