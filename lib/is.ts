@@ -1,25 +1,34 @@
 import {statSync} from 'fs';
 import {resolve} from 'path';
-import {isValidString, isString} from "./util";
+
+/**
+ * Returns path is a file
+ * @param {string} path
+ * @returns {boolean}
+ */
 
 export function isFileSync(path: string): boolean {
-	if (isValidString(path)) {
-		try {
-			return statSync(path).isFile();
-		} catch (e) {
-		}
+
+	try {
+		return statSync(path).isFile();
+	} catch (e) {
 	}
 
 	return false;
 }
 
+/**
+ * Resolves path with path.resolve and returns if path is a directory
+ * @param {string} path
+ * @returns {boolean}
+ */
+
 export function isDirSync(path: string): boolean {
-	if (isString(path)) {
+
+	try {
 		path = resolve(path);
-		try {
-			return statSync(path).isDirectory();
-		} catch (e) {
-		}
+		return statSync(path).isDirectory();
+	} catch (e) {
 	}
 
 	return false;

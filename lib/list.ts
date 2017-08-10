@@ -1,67 +1,96 @@
 import {readdirSync} from 'fs';
-import {resolve, join} from 'path';
+import {join, resolve} from 'path';
 import {isDirSync, isFileSync} from "./is";
-import {isString} from "./util";
 
-export function listFilePathsSync(path: string): string[] | null {
-	if(isString(path)) {
-		path = resolve(path);
-		const entries = listFileNamesSync(path);
-		return Array.isArray(entries) ? entries.map(e => join(path, e)) : entries;
-	}
-	return null;
+/**
+ * Returns filenames array,
+ * joined with path provided,
+ * found in directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[] | undefined}
+ */
+export function listFilePathsSync(path: string): string[] | undefined {
+	const entries = listFileNamesSync(path);
+	return Array.isArray(entries) ? entries.map(e => join(path, e)) : void 0;
 }
 
-export function listFileNamesSync(path: string): string[] | null {
-	if (isString(path)) {
-		path = resolve(path);
+/**
+ * Returns filenames array,
+ * found in a directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[] | undefined}
+ */
+export function listFileNamesSync(path: string): string[] | undefined {
 
-		try {
-			return readdirSync(path).filter(e => isFileSync(join(path, e)));
-		} catch (e) {
-		}
+	try {
+		path = resolve(path);
+		return readdirSync(path).filter(e => isFileSync(join(path, e)));
+	} catch (e) {
 	}
-	return null;
+
+	return void 0;
 }
 
-export function listDirPathsSync(path: string): string[] | null {
-	if(isString(path)) {
-		path = resolve(path);
-		const entries = listDirNamesSync(path);
-		return Array.isArray(entries) ? entries.map((e: string) => join(path, e)) : entries;
-	}
-	return null;
+/**
+ * Returns directories names array,
+ * joined with path provided,
+ * found in directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[]}
+ */
+export function listDirPathsSync(path: string): string[] | undefined {
+	const entries = listDirNamesSync(path);
+	return Array.isArray(entries) ? entries.map(e => join(path, e)) : void 0;
 }
 
-export function listDirNamesSync(path: string): string[] | null {
-	if (isString(path)) {
-		path = resolve(path);
+/**
+ * Returns directories names array,
+ * found in a directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[]}
+ */
+export function listDirNamesSync(path: string): string[] | undefined {
 
-		try {
-			return readdirSync(path).filter((e: string) => isDirSync(join(path, e)));
-		} catch (e) {
-		}
+	try {
+		path = resolve(path);
+		return readdirSync(path).filter((e: string) => isDirSync(join(path, e)));
+	} catch (e) {
 	}
-	return null;
+
+	return void 0;
 }
 
-export function listPathsSync(path: string): string[] | null {
-	if(isString(path)) {
-		path = resolve(path);
-		const entries = listNamesSync(path);
-		return Array.isArray(entries) ? entries.map((e: string) => join(path, e)) : entries;
-	}
-	return null;
+/**
+ * Returns entries array (returned by fs.readdir),
+ * joined with path provided,
+ * found in directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[]}
+ */
+export function listPathsSync(path: string): string[] | undefined {
+	const entries = listNamesSync(path);
+	return Array.isArray(entries) ? entries.map(e => join(path, e)) : entries;
 }
 
-export function listNamesSync(path: string): string[] | null {
-	if (isString(path)) {
-		path = resolve(path);
+/**
+ * Returns entries array (returned by fs.readdir),
+ * found in a directory provided,
+ * or undefined if cannot read the directory
+ * @param {string} path
+ * @returns {string[]}
+ */
+export function listNamesSync(path: string): string[] | undefined {
 
-		try {
-			return readdirSync(path);
-		} catch (e) {
-		}
+	try {
+		path = resolve(path);
+		return readdirSync(path);
+	} catch (e) {
 	}
-	return null;
+
+	return void 0;
 }

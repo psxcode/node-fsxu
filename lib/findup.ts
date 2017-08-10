@@ -1,12 +1,21 @@
 import {statSync} from 'fs';
 import {dirname, join, resolve} from 'path';
-import {isValidString} from "./util";
 
-export function findUpSync(name: string, path: string = __dirname, exclude?: RegExp): string | null {
+/**
+ * Returns resolved path containing file with name provided,
+ * starting at path defined,
+ * excluding paths that pass excludePath test,
+ * or returns undefined if not found
+ * @param {string} name
+ * @param {string} path
+ * @param {RegExp} excludePath
+ * @returns {string | undefined}
+ */
+export function findUpSync(name: string, path: string = __dirname, excludePath?: RegExp): string | undefined {
 
 	path = resolve(path);
 
-	if (exclude && exclude.test(path)) {
+	if (excludePath && excludePath.test(path)) {
 		return upnext();
 	}
 
@@ -20,10 +29,10 @@ export function findUpSync(name: string, path: string = __dirname, exclude?: Reg
 		}
 	}
 
-	return null;
+	return void 0;
 
-	function upnext(): string | null {
+	function upnext(): string | undefined {
 		const dp = dirname(path);
-		return (dp === path) ? null : findUpSync(name, dp, exclude);
+		return (dp === path) ? void 0 : findUpSync(name, dp, excludePath);
 	}
 }

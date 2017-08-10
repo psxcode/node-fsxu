@@ -52,20 +52,20 @@ describe('findUpSync', function () {
 		expect(actualPath).equal(expectedPath);
 	});
 
-	it('returns null if not found', function () {
+	it('returns undefined if not found', function () {
 		const dirpath = './root/node_modules/fsxu',
 			filename = 'not-found',
 			actualPath = findUpSync(filename, dirpath);
 
-		expect(actualPath).null;
+		expect(actualPath).undefined;
 	});
 
-	it('returns null filename is not a string', function () {
+	it('returns undefined filename is not a string', function () {
 		const dirpath = './root/node_modules/fsxu',
 			filename = null,
 			actualPath = findUpSync(filename, dirpath);
 
-		expect(actualPath).null;
+		expect(actualPath).undefined;
 	});
 
 	it('should skip found file if resulting path passes \'exclude\' test', function () {

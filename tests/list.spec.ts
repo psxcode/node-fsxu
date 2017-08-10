@@ -47,10 +47,10 @@ describe('listNamesSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listNamesSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -60,10 +60,10 @@ describe('listNamesSync', function () {
 		expect(res).length(2);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listNamesSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
 
@@ -90,10 +90,10 @@ describe('listPathsSync', function () {
 		expect(res).length(2);
 	});
 
-	it('should return resolved paths', function () {
+	it('should return joined paths', function () {
 		const res = listPathsSync('path/to');
 
-		expect(res[0][0]).equal('/');
+		expect(res[0].startsWith('path')).true;
 	});
 
 	it('should return empty array if directory is empty', function () {
@@ -103,10 +103,10 @@ describe('listPathsSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listPathsSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -116,10 +116,10 @@ describe('listPathsSync', function () {
 		expect(res).length(2);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listPathsSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
 
@@ -159,10 +159,10 @@ describe('listDirNamesSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listDirNamesSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -172,10 +172,10 @@ describe('listDirNamesSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listDirNamesSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
 
@@ -202,10 +202,10 @@ describe('listDirPathsSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return names', function () {
+	it('should return joined names', function () {
 		const res = listDirPathsSync('path/to');
 
-		expect(res[0][0]).equal('/');
+		expect(res[0].startsWith('path')).true;
 	});
 
 	it('should return empty array if directory is empty', function () {
@@ -215,10 +215,10 @@ describe('listDirPathsSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listDirPathsSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -228,10 +228,10 @@ describe('listDirPathsSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listDirPathsSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
 
@@ -271,10 +271,10 @@ describe('listFileNamesSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listFileNamesSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -284,10 +284,10 @@ describe('listFileNamesSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listFileNamesSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
 
@@ -314,10 +314,10 @@ describe('listFilePathsSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return resolved names', function () {
+	it('should return joined names', function () {
 		const res = listFilePathsSync('path/to');
 
-		expect(res[0][0]).equal('/');
+		expect(res[0].startsWith('path')).true;
 	});
 
 	it('should return empty array if directory is empty', function () {
@@ -327,10 +327,10 @@ describe('listFilePathsSync', function () {
 		expect(res).empty;
 	});
 
-	it('should return \'null\' if path does not exist', function () {
+	it('should return \'undefined\' if path does not exist', function () {
 		const res = listFilePathsSync('path/to/not-existing');
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 
 	it('should use current dir if path is empty', function () {
@@ -340,9 +340,9 @@ describe('listFilePathsSync', function () {
 		expect(res).length(1);
 	});
 
-	it('should return \'null\' if path is not a string', function () {
+	it('should return \'undefined\' if path is not a string', function () {
 		const res = listFilePathsSync(null);
 
-		expect(res).null;
+		expect(res).undefined;
 	});
 });
