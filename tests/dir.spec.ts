@@ -1,9 +1,9 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	fs = require('fs'),
-	mockfs = require('mock-fs'),
-	{makeDirSync, emptyDirSync} = require('../lib/dir'),
-	_0000 = parseInt('0000', 8);
+import * as chai from 'chai';
+import {emptyDirSync, makeDirSync} from '../lib/dir';
+
+const expect: any = chai.expect;
+const mockfs = require('mock-fs');
+const _0000 = parseInt('0000', 8);
 
 chai.use(require('chai-fs'));
 
@@ -75,7 +75,7 @@ describe('makeDirSync', function () {
 	});
 
 	it('should return false if path is not a string', function () {
-		const dirpath = {};
+		const dirpath = null;
 
 		expect(String(dirpath)).not.path('path should not exist before test');
 		expect(makeDirSync(dirpath)).false;
@@ -138,7 +138,7 @@ describe('emptyDirSync', function () {
 	});
 
 	it('should return false if path is not a string', function () {
-		const dirpath = {};
+		const dirpath = null;
 
 		expect(String(dirpath)).not.path('path should not exist before test');
 		expect(emptyDirSync(dirpath)).false;

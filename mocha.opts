@@ -1,0 +1,6 @@
+--ui bdd
+--recursive
+--require tests/tshook.js
+--require source-map-support/register
+--watch-extensions ts
+tests/*.ts

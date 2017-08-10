@@ -1,8 +1,8 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	fs = require('fs'),
-	mockfs = require('mock-fs'),
-	{rmSync, rmDirSync, rmFileSync} = require('../lib/rm');
+import * as chai from 'chai';
+import {rmDirSync, rmSync, rmFileSync} from "../lib/rm";
+
+const expect: any = chai.expect;
+const mockfs = require('mock-fs');
 
 chai.use(require('chai-fs'));
 
@@ -34,7 +34,7 @@ describe('rmDirSync', function () {
 		const dirpath = './path';
 
 		expect(dirpath).directory('directory should exist before test');
-		expect(rmDirSync(dirpath, true)).true;
+		expect(rmDirSync(dirpath)).true;
 		expect(dirpath).not.path('path should not exist after test');
 	});
 
@@ -63,7 +63,7 @@ describe('rmDirSync', function () {
 	});
 
 	it('should return false if path is not string', function () {
-		const dirpath = {};
+		const dirpath = null;
 
 		expect(String(dirpath)).not.path('path should not exist before test');
 		expect(rmDirSync(dirpath)).false;
@@ -117,7 +117,7 @@ describe('rmFileSync', function () {
 	});
 
 	it('should return false if path is not a string', function () {
-		const dirpath = {};
+		const dirpath = null;
 
 		expect(rmFileSync(dirpath)).false;
 	});
@@ -179,7 +179,7 @@ describe('rmSync', function () {
 	});
 
 	it('should return false if path is not a string', function () {
-		const dirpath = {};
+		const dirpath = null;
 
 		expect(rmSync(dirpath)).false;
 	});

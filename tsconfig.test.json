@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es2015",
+		"lib": ["es2015"],
+		"types": ["node", "mocha", "chai"],
+		"noImplicitAny": false,
+		"removeComments": true,
+		"sourceMap": true
+	},
+	"include": [
+		"lib"
+	],
+	"exclude": ["node_modules"]
+}

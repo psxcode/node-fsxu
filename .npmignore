@@ -2,3 +2,9 @@
 node_modules/
 test/
 coverage/
+.nyc_output/
+.rpt2_cache/
+lib/
+.editorconfig
+tsconfig.json
+rollup.config.js

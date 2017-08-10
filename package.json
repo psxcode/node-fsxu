@@ -1,50 +1,51 @@
 {
-  "name": "fsxu",
-  "version": "0.1.0",
-  "description": "minimal filesystem utility functions inspired by fs-extra",
-  "main": "./lib/index.js",
-  "scripts": {
-    "test": "istanbul cover _mocha -- ./test/*.test.js"
-  },
-  "author": {
-    "name": "Alex Feinstein",
-    "url": "https://github.com/psxcode"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/psxcode/node-fsxu",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/psxcode/node-fsxu"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-fs": "^1.0.0",
-    "istanbul": "^0.4.5",
-    "mocha": "*",
-    "mock-fs": "*"
-  },
-  "keywords": [
-    "fs",
-    "file",
-    "file system",
-    "copy",
-    "directory",
-    "extra",
-    "mkdirp",
-    "mkdir",
-    "mkdirs",
-    "recursive",
-    "json",
-    "read",
-    "write",
-    "extra",
-    "delete",
-    "remove",
-    "touch",
-    "create",
-    "text",
-    "output",
-    "move"
-  ]
+	"name": "fsxu",
+	"version": "0.1.1",
+	"description": "minimal filesystem utility functions inspired by fs-extra",
+	"main": "./lib/index.js",
+	"scripts": {
+		"test": "nyc npm run mocha",
+		"test:watch": "npm run mocha -- --watch",
+		"coverage": "nyc report --reporter=lcov",
+		"mocha": "mocha --opts mocha.opts",
+		"rollup": "rollup -c rollup.config.js"
+	},
+	"nyc": {
+		"extension": [".ts"],
+		"include": ["lib/*.ts"],
+		"exclude": ["**/*.d.ts", "**/*.spec.ts", "lib/index.ts"],
+		"reporter": ["lcov", "text-summary"],
+		"all": true
+	},
+	"author": {
+		"name": "Alex Feinstein",
+		"url": "https://github.com/psxcode"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/psxcode/node-fsxu",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/psxcode/node-fsxu"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/chai": "^4.0.2",
+		"@types/mocha": "^2.2.41",
+		"@types/node": "^8.0.20",
+		"chai": "^3.5.0",
+		"chai-fs": "^1.0.0",
+		"istanbul": "^0.4.5",
+		"mocha": "^3.5.0",
+		"mock-fs": "^4.4.1",
+		"nyc": "^11.1.0",
+		"rollup": "^0.45.2",
+		"rollup-plugin-typescript": "^0.8.1",
+		"rollup-plugin-typescript2": "^0.5.0",
+		"source-map-support": "^0.4.15",
+		"ts-node": "^3.3.0",
+		"typescript": "^2.4.2"
+	},
+	"keywords": [
+		"fs", "file", "file system", "copy", "directory", "extra", "mkdirp", "mkdir", "mkdirs", "recursive", "json", "read", "write", "extra", "delete", "remove", "touch", "create", "text", "output", "move"
+	]
 }

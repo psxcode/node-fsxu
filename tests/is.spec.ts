@@ -1,7 +1,8 @@
-const chai = require('chai'),
-	expect = chai.expect,
-	mockfs = require('mock-fs'),
-	{isFileSync, isDirSync} = require('../lib/is');
+import * as chai from 'chai';
+import {isFileSync, isDirSync} from "../lib/is";
+
+const expect: any = chai.expect;
+const mockfs = require('mock-fs');
 
 chai.use(require('chai-fs'));
 
@@ -51,7 +52,7 @@ describe('is', function () {
 		});
 
 		it('returns false if path is not a string', function () {
-			const filepath = {};
+			const filepath = null;
 
 			expect(isFileSync(filepath)).false;
 		});
@@ -88,7 +89,7 @@ describe('is', function () {
 		});
 
 		it('returns false if path is not a string', function () {
-			const dirpath = {};
+			const dirpath = null;
 
 			expect(isDirSync(dirpath)).false;
 		});

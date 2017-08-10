@@ -1,6 +1,15 @@
-const expect = require('chai').expect,
-	mockfs = require('mock-fs'),
-	{listNamesSync, listPathsSync, listDirNamesSync, listDirPathsSync, listFileNamesSync, listFilePathsSync} = require('../lib/list');
+import * as chai from 'chai';
+import {
+	listDirNamesSync,
+	listDirPathsSync,
+	listFileNamesSync,
+	listFilePathsSync,
+	listNamesSync,
+	listPathsSync
+} from '../lib/list';
+
+const expect: any = chai.expect;
+const mockfs = require('mock-fs');
 
 describe('listNamesSync', function () {
 
@@ -52,7 +61,7 @@ describe('listNamesSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listNamesSync({});
+		const res = listNamesSync(null);
 
 		expect(res).null;
 	});
@@ -108,7 +117,7 @@ describe('listPathsSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listPathsSync({});
+		const res = listPathsSync(null);
 
 		expect(res).null;
 	});
@@ -164,7 +173,7 @@ describe('listDirNamesSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listDirNamesSync({});
+		const res = listDirNamesSync(null);
 
 		expect(res).null;
 	});
@@ -220,7 +229,7 @@ describe('listDirPathsSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listDirPathsSync({});
+		const res = listDirPathsSync(null);
 
 		expect(res).null;
 	});
@@ -276,7 +285,7 @@ describe('listFileNamesSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listFileNamesSync({});
+		const res = listFileNamesSync(null);
 
 		expect(res).null;
 	});
@@ -332,7 +341,7 @@ describe('listFilePathsSync', function () {
 	});
 
 	it('should return \'null\' if path is not a string', function () {
-		const res = listFilePathsSync({});
+		const res = listFilePathsSync(null);
 
 		expect(res).null;
 	});
