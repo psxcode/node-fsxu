@@ -1,10 +1,13 @@
 .idea/
 node_modules/
-test/
+tests/
+lib/
 coverage/
 .nyc_output/
 .rpt2_cache/
-lib/
+mocha.opts
 .editorconfig
+.npmignore
 tsconfig.json
+tsconfig.test.json
 rollup.config.js
