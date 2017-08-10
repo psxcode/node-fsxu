@@ -7,14 +7,28 @@
 		"test": "nyc npm run mocha",
 		"test:watch": "npm run mocha -- --watch",
 		"coverage": "nyc report --reporter=lcov",
+		"report": "opn ./coverage/lcov-report/index.html",
+		"build": "npm run rollup",
+		"clean": "rimraf dist coverage .rpt2_cache .nyc_output",
 		"mocha": "mocha --opts mocha.opts",
 		"rollup": "rollup -c rollup.config.js"
 	},
 	"nyc": {
-		"extension": [".ts"],
-		"include": ["lib/*.ts"],
-		"exclude": ["**/*.d.ts", "**/*.spec.ts", "lib/index.ts"],
-		"reporter": ["lcov", "text-summary"],
+		"extension": [
+			".ts"
+		],
+		"include": [
+			"lib/*.ts"
+		],
+		"exclude": [
+			"**/*.d.ts",
+			"**/*.spec.ts",
+			"lib/index.ts"
+		],
+		"reporter": [
+			"lcov",
+			"text-summary"
+		],
 		"all": true
 	},
 	"author": {
@@ -38,6 +52,8 @@
 		"mocha": "^3.5.0",
 		"mock-fs": "^4.4.1",
 		"nyc": "^11.1.0",
+		"opn-cli": "^3.1.0",
+		"rimraf": "^2.6.1",
 		"rollup": "^0.45.2",
 		"rollup-plugin-typescript": "^0.8.1",
 		"rollup-plugin-typescript2": "^0.5.0",
@@ -46,6 +62,26 @@
 		"typescript": "^2.4.2"
 	},
 	"keywords": [
-		"fs", "file", "file system", "copy", "directory", "extra", "mkdirp", "mkdir", "mkdirs", "recursive", "json", "read", "write", "extra", "delete", "remove", "touch", "create", "text", "output", "move"
+		"fs",
+		"file",
+		"file system",
+		"copy",
+		"directory",
+		"extra",
+		"mkdirp",
+		"mkdir",
+		"mkdirs",
+		"recursive",
+		"json",
+		"read",
+		"write",
+		"extra",
+		"delete",
+		"remove",
+		"touch",
+		"create",
+		"text",
+		"output",
+		"move"
 	]
 }

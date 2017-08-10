@@ -6,10 +6,6 @@ export function findUpSync(name: string, path: string = __dirname, exclude?: Reg
 
 	path = resolve(path);
 
-	if (!isValidString(path)) {
-		return null;
-	}
-
 	if (exclude && exclude.test(path)) {
 		return upnext();
 	}
