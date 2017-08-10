@@ -2,33 +2,24 @@
 	"name": "fsxu",
 	"version": "0.1.1",
 	"description": "minimal filesystem utility functions inspired by fs-extra",
-	"main": "./lib/index.js",
+	"main": "dist/index.js",
 	"scripts": {
-		"test": "nyc npm run mocha",
+		"test": "nyc npm run mocha && npm run report",
 		"test:watch": "npm run mocha -- --watch",
-		"coverage": "nyc report --reporter=lcov",
 		"report": "opn ./coverage/lcov-report/index.html",
 		"build": "npm run rollup",
 		"clean": "rimraf dist coverage .rpt2_cache .nyc_output",
 		"mocha": "mocha --opts mocha.opts",
-		"rollup": "rollup -c rollup.config.js"
+		"rollup": "rollup -c rollup.config.js",
+		"bump-patch": "npm version patch",
+		"bump-minor": "npm version minor",
+		"bump-major": "npm version major"
 	},
 	"nyc": {
-		"extension": [
-			".ts"
-		],
-		"include": [
-			"lib/*.ts"
-		],
-		"exclude": [
-			"**/*.d.ts",
-			"**/*.spec.ts",
-			"lib/index.ts"
-		],
-		"reporter": [
-			"lcov",
-			"text-summary"
-		],
+		"extension": [".ts"],
+		"include": ["lib/*.ts"],
+		"exclude": ["**/*.d.ts", "**/*.spec.ts", "lib/index.ts"],
+		"reporter": ["lcov", "text-summary"],
 		"all": true
 	},
 	"author": {
@@ -61,27 +52,5 @@
 		"ts-node": "^3.3.0",
 		"typescript": "^2.4.2"
 	},
-	"keywords": [
-		"fs",
-		"file",
-		"file system",
-		"copy",
-		"directory",
-		"extra",
-		"mkdirp",
-		"mkdir",
-		"mkdirs",
-		"recursive",
-		"json",
-		"read",
-		"write",
-		"extra",
-		"delete",
-		"remove",
-		"touch",
-		"create",
-		"text",
-		"output",
-		"move"
-	]
+	"keywords": ["fs", "file", "file system", "copy", "directory", "extra", "mkdirp", "mkdir", "mkdirs", "recursive", "json", "read", "write", "extra", "delete", "remove", "touch", "create", "text", "output", "move"]
 }
