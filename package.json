@@ -1,6 +1,6 @@
 {
 	"name": "fsxu",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "minimal filesystem utility functions inspired by fs-extra",
 	"main": "dist/index.js",
 	"scripts": {
@@ -16,10 +16,21 @@
 		"bump-major": "npm version major"
 	},
 	"nyc": {
-		"extension": [".ts"],
-		"include": ["lib/*.ts"],
-		"exclude": ["**/*.d.ts", "**/*.spec.ts", "lib/index.ts"],
-		"reporter": ["lcov", "text-summary"],
+		"extension": [
+			".ts"
+		],
+		"include": [
+			"lib/*.ts"
+		],
+		"exclude": [
+			"**/*.d.ts",
+			"**/*.spec.ts",
+			"lib/index.ts"
+		],
+		"reporter": [
+			"lcov",
+			"text-summary"
+		],
 		"all": true
 	},
 	"author": {
@@ -52,5 +63,27 @@
 		"ts-node": "^3.3.0",
 		"typescript": "^2.4.2"
 	},
-	"keywords": ["fs", "file", "file system", "copy", "directory", "extra", "mkdirp", "mkdir", "mkdirs", "recursive", "json", "read", "write", "extra", "delete", "remove", "touch", "create", "text", "output", "move"]
+	"keywords": [
+		"fs",
+		"file",
+		"file system",
+		"copy",
+		"directory",
+		"extra",
+		"mkdirp",
+		"mkdir",
+		"mkdirs",
+		"recursive",
+		"json",
+		"read",
+		"write",
+		"extra",
+		"delete",
+		"remove",
+		"touch",
+		"create",
+		"text",
+		"output",
+		"move"
+	]
 }
