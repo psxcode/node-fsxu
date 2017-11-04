@@ -1,4 +1,6 @@
 # node-fsxu
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/psxcode/node-fsxu.svg)](https://greenkeeper.io/)
 `fsxu` is minimal set of filesystem utility functions inspired by fs-extra
 
 ## Installation
